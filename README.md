@@ -142,7 +142,17 @@ The combinators do the rest!
 So these are like RubyOnRails controller filters?
 ---
 
-There are some differences. These are much simpler, which is in keeping with JavaScript's elegant style. For example, in Rails all of the filters can abort the filter chain by returning something falsy. The `before` and `after` decorators don't act as filters. Use `provided` is that's what you want.
+There are some differences. These are much simpler, which is in keeping with JavaScript's elegant style. For example, in Rails all of the filters can abort the filter chain by returning something falsy. The `before` and `after` decorators don't act as filters. Use `provided` if that's what you want.
+
+More specifically:
+
+* None of the decorators you build with the method combinators change the arguments passed to the method. The `before` and `around` callbacks can execute code before the method body is executed, but only for side-effects.
+* The `provided` decorator will return `void 0` if it evaluates to falsy or return whatever the method body returns. There's no other way to change the return value with `provided`
+* The `around` decorator will return `void 0` if you don't call the passed callback. Otherwise, it returns whatever the method body would return. You can't change its arguments or the return value. You don't need to pass arguments to the callback. If you do, they will be ignored.
+
+Or in JavaScript:
+
+```javascript.
 
 Is it any good?
 ---

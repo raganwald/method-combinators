@@ -117,6 +117,21 @@ describe "Method Combinators", ->
 
       expect(eg.getFoo()).toBe('eg')
 
+    it 'should not change the arguments', ->
+
+      decorator = C.around (callback)->
+        callback('decorated')
+      class BeforeClazz
+        getFoo: 
+          decorator \
+          -> @foo
+        setFoo: (@foo) ->
+
+      eg = new BeforeClazz()
+      eg.setFoo('eg')
+
+      expect(eg.getFoo()).toBe('eg')
+
   describe "provided", ->
 
     it 'should set this appropriately', ->
