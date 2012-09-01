@@ -118,7 +118,7 @@ Is it any good?
 Can I use it with pure Javascript?
 ---
 
-[Yes][js].
+[Yes](https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js).
 
 Can I install it with npm?
 ---
