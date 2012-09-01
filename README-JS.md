@@ -4,7 +4,7 @@ method-combinators
 tl;dr
 ---
 
-This library gives you some handy function combinators you can use to make [Method Decorators] in CoffeeScript (click [here](http://README-JS.md) for examples in JavaScript):
+This library gives you some handy function combinators you can use to make [Method Decorators] in JavaScript (click [here](http://README.md) for examples in CoffeeScript):
 
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript "Method Decorators in CoffeeScript"
 
@@ -52,43 +52,52 @@ Back up the truck, Chuck. What's a Method Decorator?
 
 A method decorator is a function that takes a function as its argument and returns a new function that is to be used as a method body. For example, this is a method decorator:
 
-```coffeescript
-mustBeLoggedIn = (methodBody) ->
-                   ->
-                     if currentUser?.isValid()
-                       methodBody.apply(this, arguments)
+```javascript
+mustBeLoggedIn = function (methodBody) {
+  return function () {
+    if (currentUser?.isValid()) {
+      return methodBody.apply(this, arguments)
+    }
+  }
+}
 ```
 
 You use it like this:
 
-```coffeescript
-class SomeControllerLikeThing
+```javascript
+function SomeControllerLikeThing() {}
 
-  showUserPreferences:
-    mustBeLoggedIn ->
-      #
-      # ... show user preferences
-      #
+SomeControllerLikeThing.prototype.showUserPreferences =
+  mustBeLoggedIn(
+    function() {
+      //
+      // ... show user preferences
+      //
+    }
+  );
 ```
 
 And now, whenever `showUserPreferences` is called, nothing happens unless `currentUser?.isValid()` is truthy. And you can reuse `mustBeLoggedIn` wherever you like. Since method decorators are based on function combinators, they compose very nicely, you can write:
 
-```coffeescript
-triggersMenuRedraw = (methodBody) ->
-                       ->
-                         __rval__ = methodBody.apply(this, arguments)
-                        @trigger('menu:redraww')
-                        __rval__
+```javascript
+triggersMenuRedraw = function(methodBody) {
+  return function () {
+    var __rval__ = methodBody.apply(this, arguments);
+    this.trigger('menu:redraww');
+    return __rval__;
+  }
+};
 
-class AnotherControllerLikeThing
+function AnotherControllerLikeThing() {};
 
-  updateUserPreferences:
-    mustBeLoggedIn \
-    triggersMenuRedraw \
-    ->
-      #
-      # ... save updated user preferences
-      #
+AnotherControllerLikeThing.prototype.updateUserPreferences =
+  mustBeLoggedIn(
+    triggersMenuRedraw(
+      function() {
+        //
+        // ... save updated user preferences
+        //
+      }));
 ```
 
 Fine. Method Decorators look cool. So what's a Method Combinator?
@@ -103,39 +112,55 @@ Method combinators are convenient function combinators for making method decorat
 
 Method *combinators* make these four kinds of method decorators extremely easy to write. Instead of:
 
-```coffeescript
-mustBeLoggedIn = (methodBody) ->
-                   ->
-                     if currentUser?.isValid()
-                       methodBody.apply(this, arguments)
+```javascript
+mustBeLoggedIn = function (methodBody) {
+  return function () {
+    if (currentUser?.isValid()) {
+      return methodBody.apply(this, arguments)
+    }
+  }
+}
 
-triggersMenuRedraw = (methodBody) ->
-                       ->
-                         __rval__ = methodBody.apply(this, arguments)
-                        @trigger('menu:redraww')
-                        __rval__
+triggersMenuRedraw = function(methodBody) {
+  return function () {
+    var __rval__ = methodBody.apply(this, arguments);
+    this.trigger('menu:redraww');
+    return __rval__;
+  }
+};
 ```
 
 We write:
 
-```coffeescript
-mustBeLoggedIn = provided -> currentUser?.isValid()
+```javascript
+mustBeLoggedIn =
+  provided(
+    function() {
+      return typeof currentUser !== "undefined" && currentUser !== null ? currentUser.isValid() : void 0;
+    }
+  );
 
-triggersMenuRedraw = after -> @trigger('menu:redraww')
+triggersMenuRedraw = 
+  after(
+    function() {
+      return this.trigger('menu:redraww');
+    }
+  );
 ```
 
 And they work exactly as we expect:
 
-```coffeescript
-class AnotherControllerLikeThing
+```javascript
+function AnotherControllerLikeThing() {};
 
-  updateUserPreferences:
-    mustBeLoggedIn \
-    triggersMenuRedraw \
-    ->
-      #
-      # ... save updated user preferences
-      #
+AnotherControllerLikeThing.prototype.updateUserPreferences =
+  mustBeLoggedIn(
+    triggersMenuRedraw(
+      function() {
+        //
+        // ... save updated user preferences
+        //
+      }));
 ```
 
 The combinators do the rest!
