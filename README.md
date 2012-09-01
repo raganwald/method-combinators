@@ -124,6 +124,16 @@ We write:
 mustBeLoggedIn = provided -> currentUser
 
 triggersMenuRedraw = after -> @trigger('menu:redraww')
+
+class AnotherControllerLikeThing
+
+  updateUserPreferences:
+    mustBeLoggedIn \
+    triggersMenuRedraw \
+    ->
+      #
+      # ... save updated user preferences
+      #
 ```
 
 The combinators do the rest!
