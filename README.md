@@ -128,8 +128,6 @@ triggersMenuRedraw = after -> @trigger('menu:redraww')
 
 The combinators do the rest!
 
-A
-
 So these are like RubyOnRails controller filters?
 ---
 
@@ -152,7 +150,7 @@ Can I use it with pure Javascript?
 Can I install it with npm?
 ---
 
-Yes: `npm install method-combinators
+Yes: `npm install method-combinators`
 
 How to get started
 ---
