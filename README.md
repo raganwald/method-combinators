@@ -10,38 +10,37 @@ This library gives you some handy function combinators you can use to make [Meth
 
 ```coffeescript
 
-before (...) -> something
-  
-# => (methodBody) ->
-#      (argv...) ->
-#        ((...) -> something).apply(this, argv)
-#        methodBody.apply(this, argv)
-    
-after (...) -> something
+this.before =
+  (decoration) ->
+    (base) ->
+      ->
+        decoration.apply(this, arguments)
+        base.apply(this, arguments)
 
-# => (methodBody) ->
-#      (argv...) ->
-#        __ret__ = methodBody.apply(this, argv)
-#        ((...) -> something).apply(this, argv)
-#        __ret__
-    
-around (...) -> something
+this.after =
+  (decoration) ->
+    (base) ->
+      ->
+        __value__ = base.apply(this, arguments)
+        decoration.apply(this, arguments)
+        __value__
 
-# => (methodBody) ->
-#      (argv...) ->
-#        (...) -> something).call(
-#          this,
-#          (__ret__ = => methodBody.apply(this, argv)),
-#          argv...
-#        )
-#       __ret__
+this.around =
+  (decoration) ->
+    (base) ->
+      (argv...) ->
+        __value__ = undefined
+        callback = =>
+          __value__ = base.apply(this, argv)
+        decoration.apply(this, [callback].concat(argv))
+        __value__
 
-provided (...) -> something
-
-# => (methodBody) ->
-#      (argv...) ->
-#        if ((...) -> something).apply(this, argv)
-#          methodBody.apply(this, argv)
+this.provided =
+  (condition) ->
+    (base) ->
+      ->
+        if condition.apply(this, arguments)
+          base.apply(this, arguments)
 
 ```
 

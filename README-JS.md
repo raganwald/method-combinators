@@ -10,38 +10,54 @@ This library gives you some handy function combinators you can use to make [Meth
 
 ```coffeescript
 
-before (...) -> something
-  
-# => (methodBody) ->
-#      (argv...) ->
-#        ((...) -> something).apply(this, argv)
-#        methodBody.apply(this, argv)
-    
-after (...) -> something
+  var __slice = [].slice;
 
-# => (methodBody) ->
-#      (argv...) ->
-#        __ret__ = methodBody.apply(this, argv)
-#        ((...) -> something).apply(this, argv)
-#        __ret__
-    
-around (...) -> something
+  this.before = function(decoration) {
+    return function(base) {
+      return function() {
+        decoration.apply(this, arguments);
+        return base.apply(this, arguments);
+      };
+    };
+  };
 
-# => (methodBody) ->
-#      (argv...) ->
-#        (...) -> something).call(
-#          this,
-#          (__ret__ = => methodBody.apply(this, argv)),
-#          argv...
-#        )
-#       __ret__
+  this.after = function(decoration) {
+    return function(base) {
+      return function() {
+        var __value__;
+        __value__ = base.apply(this, arguments);
+        decoration.apply(this, arguments);
+        return __value__;
+      };
+    };
+  };
 
-provided (...) -> something
+  this.around = function(decoration) {
+    return function(base) {
+      return function() {
+        var argv, callback, __value__,
+          _this = this;
+        argv = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        __value__ = void 0;
+        callback = function() {
+          return __value__ = base.apply(_this, argv);
+        };
+        decoration.apply(this, [callback].concat(argv));
+        return __value__;
+      };
+    };
+  };
 
-# => (methodBody) ->
-#      (argv...) ->
-#        if ((...) -> something).apply(this, argv)
-#          methodBody.apply(this, argv)
+  this.provided = function(condition) {
+    return function(base) {
+      return function() {
+        if (condition.apply(this, arguments)) {
+          return base.apply(this, arguments);
+        }
+      };
+    };
+  };
+
 
 ```
 
