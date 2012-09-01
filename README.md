@@ -54,15 +54,24 @@ A method decorator is a function that takes a function as its argument and retur
 
 ```coffeescript
 mustBeLoggedIn = (methodBody) ->
-                   (argv...) ->
+                   ->
                      if currentUser?.isValid()
-                       methodBody.apply(this, argv)
+                       methodBody.apply(this, arguments)
+```
+
+```javascript
+mustBeLoggedIn = function (methodBody) {
+  return function () {
+    if (currentUser?.isValid()) {
+      return methodBody.apply(this, arguments)
+    }
+  }
+}
 ```
 
 You use it like this:
 
 ```coffeescript
-
 class SomeControllerLikeThing
 
   showUserPreferences:
@@ -72,13 +81,25 @@ class SomeControllerLikeThing
       #
 ```
 
+```javascript
+function SomeControllerLikeThing() {}
+
+SomeControllerLikeThing.prototype.showUserPreferences =
+  mustBeLoggedIn(
+    function() {
+      #
+      # ... show user preferences
+      #
+    }
+  );
+```
+
 And now, whenever `showUserPreferences` is called, nothing happens unless `currentUser?.isValid()` is truthy. And you can reuse `mustBeLoggedIn` wherever you like. Since method decorators are based on function combinators, they compose very nicely, you can write:
 
 ```coffeescript
-
 triggersMenuRedraw = (methodBody) ->
-                       (argv...) ->
-                         __rval__ = methodBody.apply(this, argv)
+                       ->
+                         __rval__ = methodBody.apply(this, arguments)
                         @trigger('menu:redraww')
                         __rval__
 
@@ -91,6 +112,27 @@ class AnotherControllerLikeThing
       #
       # ... save updated user preferences
       #
+```
+
+```javascript
+triggersMenuRedraw = function(methodBody) {
+  return function () {
+    var __rval__ = methodBody.apply(this, arguments);
+    this.trigger('menu:redraww');
+    return __rval__;
+  }
+};
+
+function AnotherControllerLikeThing() {};
+
+AnotherControllerLikeThing.prototype.updateUserPreferences =
+  mustBeLoggedIn(
+    triggersMenuRedraw(
+      function() {
+        #
+        # ... save updated user preferences
+        #
+      }));
 ```
 
 Fine. Method Decorators look cool. So what's a Method Combinator?
@@ -107,13 +149,13 @@ Method *combinators* make these four kinds of method decorators extremely easy t
 
 ```coffeescript
 mustBeLoggedIn = (methodBody) ->
-                   (argv...) ->
+                   ->
                      if currentUser?.isValid()
-                       methodBody.apply(this, argv)
+                       methodBody.apply(this, arguments)
 
 triggersMenuRedraw = (methodBody) ->
-                       (argv...) ->
-                         __rval__ = methodBody.apply(this, argv)
+                       ->
+                         __rval__ = methodBody.apply(this, arguments)
                         @trigger('menu:redraww')
                         __rval__
 ```
@@ -124,6 +166,22 @@ We write:
 mustBeLoggedIn = provided -> currentUser?.isValid()
 
 triggersMenuRedraw = after -> @trigger('menu:redraww')
+```
+
+```javascript
+mustBeLoggedIn =
+  provided(
+    function() {
+      return typeof currentUser !== "undefined" && currentUser !== null ? currentUser.isValid() : void 0;
+    }
+  );
+
+triggersMenuRedraw = 
+  after(
+    function() {
+      return this.trigger('menu:redraww');
+    }
+  );
 ```
 
 And they work exactly as we expect:
@@ -140,6 +198,19 @@ class AnotherControllerLikeThing
       #
 ```
 
+```javascript
+function AnotherControllerLikeThing() {};
+
+AnotherControllerLikeThing.prototype.updateUserPreferences =
+  mustBeLoggedIn(
+    triggersMenuRedraw(
+      function() {
+        #
+        # ... save updated user preferences
+        #
+      }));
+```
+
 The combinators do the rest!
 
 So these are like RubyOnRails controller filters?
@@ -153,11 +224,6 @@ Is it any good?
 [Yes][y].
 
 [y]: http://news.ycombinator.com/item?id=3067434
-
-Can I use it with pure Javascript?
----
-
-[Yes][js].
 
 [js]: https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js
 
