@@ -55,7 +55,7 @@ A method decorator is a function that takes a function as its argument and retur
 ```coffeescript
 mustBeLoggedIn = (methodBody) ->
                    (argv...) ->
-                     if currentUser
+                     if currentUser?.isValid()
                        methodBody.apply(this, argv)
 ```
 
@@ -72,7 +72,7 @@ class SomeControllerLikeThing
       #
 ```
 
-And now, whenever `showUserPreferences` is called, nothing happens unless `currentUser` is truthy. And you can reuse `mustBeLoggedIn` wherever you like. Since method decorators are based on function combinators, they compose very nicely, you can write:
+And now, whenever `showUserPreferences` is called, nothing happens unless `currentUser?.isValid()` is truthy. And you can reuse `mustBeLoggedIn` wherever you like. Since method decorators are based on function combinators, they compose very nicely, you can write:
 
 ```coffeescript
 
@@ -108,7 +108,7 @@ Method *combinators* make these four kinds of method decorators extremely easy t
 ```coffeescript
 mustBeLoggedIn = (methodBody) ->
                    (argv...) ->
-                     if currentUser
+                     if currentUser?.isValid()
                        methodBody.apply(this, argv)
 
 triggersMenuRedraw = (methodBody) ->
@@ -121,10 +121,14 @@ triggersMenuRedraw = (methodBody) ->
 We write:
 
 ```coffeescript
-mustBeLoggedIn = provided -> currentUser
+mustBeLoggedIn = provided -> currentUser?.isValid()
 
 triggersMenuRedraw = after -> @trigger('menu:redraww')
+```
 
+And they work exactly as we expect:
+
+```coffeescript
 class AnotherControllerLikeThing
 
   updateUserPreferences:
