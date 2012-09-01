@@ -1,0 +1,20 @@
+{
+  "author": "Reg Braithwaite <raganwald@gmail.com> (http://braythwayt.com)",
+  "name": "method-combinators",
+  "description": "Coffeescript/Javascript method combinators",
+  "version": "1.1.5",
+  "homepage": "https://github.com/raganwald/method-combinators",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/raganwald/method-combinators.git"
+  },
+  "main": "lib/method-combinators.js",
+  "scripts": {
+    "test": "jasmine-node --coffee --verbose spec"
+  },
+  "engines": {
+    "node": ""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
