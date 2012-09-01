@@ -59,6 +59,8 @@ mustBeLoggedIn = (methodBody) ->
                        methodBody.apply(this, arguments)
 ```
 
+Or in JavaScript:
+
 ```javascript
 mustBeLoggedIn = function (methodBody) {
   return function () {
@@ -80,6 +82,8 @@ class SomeControllerLikeThing
       # ... show user preferences
       #
 ```
+
+Or in JavaScript:
 
 ```javascript
 function SomeControllerLikeThing() {}
@@ -113,6 +117,8 @@ class AnotherControllerLikeThing
       # ... save updated user preferences
       #
 ```
+
+Or in JavaScript:
 
 ```javascript
 triggersMenuRedraw = function(methodBody) {
@@ -160,6 +166,26 @@ triggersMenuRedraw = (methodBody) ->
                         __rval__
 ```
 
+Or in JavaScript:
+
+```javascript
+mustBeLoggedIn = function (methodBody) {
+  return function () {
+    if (currentUser?.isValid()) {
+      return methodBody.apply(this, arguments)
+    }
+  }
+}
+
+triggersMenuRedraw = function(methodBody) {
+  return function () {
+    var __rval__ = methodBody.apply(this, arguments);
+    this.trigger('menu:redraww');
+    return __rval__;
+  }
+};
+```
+
 We write:
 
 ```coffeescript
@@ -167,6 +193,8 @@ mustBeLoggedIn = provided -> currentUser?.isValid()
 
 triggersMenuRedraw = after -> @trigger('menu:redraww')
 ```
+
+Or in JavaScript:
 
 ```javascript
 mustBeLoggedIn =
@@ -197,6 +225,8 @@ class AnotherControllerLikeThing
       # ... save updated user preferences
       #
 ```
+
+Or in JavaScript:
 
 ```javascript
 function AnotherControllerLikeThing() {};
