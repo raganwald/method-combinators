@@ -4,7 +4,7 @@ method-combinators
 tl;dr
 ---
 
-This library gives you some handy function combinators you can use to make [Method Decorators] in CoffeeScript or JavaScript:
+This library gives you some handy function combinators you can use to make [Method Decorators] in CoffeeScript or [JavaScript][js]:
 
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-in-coffeescript.md#method-decorators-in-coffeescript "Method Decorators in CoffeeScript"
 
@@ -103,6 +103,33 @@ Method combinators are convenient function combinators for making method decorat
 3. You want to do wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
 
+Method *combinators* make these four kinds of method decorators extremely easy to write. Instead of:
+
+```coffeescript
+mustBeLoggedIn = (methodBody) ->
+                   (argv...) ->
+                     if currentUser
+                       methodBody.apply(this, argv)
+
+triggersMenuRedraw = (methodBody) ->
+                       (argv...) ->
+                         __rval__ = methodBody.apply(this, argv)
+                        @trigger('menu:redraww')
+                        __rval__
+```
+
+We write:
+
+```coffeescript
+mustBeLoggedIn = provided -> currentUser
+
+triggersMenuRedraw = after -> @trigger('menu:redraww')
+```
+
+The combinators do the rest!
+
+A
+
 So these are like RubyOnRails controller filters?
 ---
 
@@ -118,7 +145,9 @@ Is it any good?
 Can I use it with pure Javascript?
 ---
 
-[Yes](https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js).
+[Yes][js].
+
+[js]: https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js
 
 Can I install it with npm?
 ---
