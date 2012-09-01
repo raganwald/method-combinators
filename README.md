@@ -4,7 +4,7 @@ method-combinators
 tl;dr
 ---
 
-This library gives you some handy function combinators you can use to make [Method Decorators] in CoffeeScript (click [here](http://README-JS.md) for examples in JavaScript):
+This library gives you some handy function combinators you can use to make [Method Decorators] in CoffeeScript (click [here](http:README-JS.md) for examples in JavaScript):
 
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript "Method Decorators in CoffeeScript"
 
