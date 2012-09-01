@@ -192,10 +192,6 @@ More specifically:
 * The `provided` decorator will return `void 0` if it evaluates to falsy or return whatever the method body returns. There's no other way to change the return value with `provided`
 * The `around` decorator will return `void 0` if you don't call the passed callback. Otherwise, it returns whatever the method body would return. You can't change its arguments or the return value. You don't need to pass arguments to the callback. If you do, they will be ignored.
 
-Or in JavaScript:
-
-```javascript.
-
 Is it any good?
 ---
 
