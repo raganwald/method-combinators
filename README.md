@@ -87,9 +87,9 @@ function SomeControllerLikeThing() {}
 SomeControllerLikeThing.prototype.showUserPreferences =
   mustBeLoggedIn(
     function() {
-      #
-      # ... show user preferences
-      #
+      //
+      // ... show user preferences
+      //
     }
   );
 ```
@@ -129,9 +129,9 @@ AnotherControllerLikeThing.prototype.updateUserPreferences =
   mustBeLoggedIn(
     triggersMenuRedraw(
       function() {
-        #
-        # ... save updated user preferences
-        #
+        //
+        // ... save updated user preferences
+        //
       }));
 ```
 
@@ -205,9 +205,9 @@ AnotherControllerLikeThing.prototype.updateUserPreferences =
   mustBeLoggedIn(
     triggersMenuRedraw(
       function() {
-        #
-        # ... save updated user preferences
-        #
+        //
+        // ... save updated user preferences
+        //
       }));
 ```
 
