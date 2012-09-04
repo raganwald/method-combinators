@@ -71,7 +71,7 @@ A method decorator is a function that takes a function as its argument and retur
 ```javascript
 mustBeLoggedIn = function (methodBody) {
   return function () {
-    if (currentUser?.isValid()) {
+    if (currentUser.isValid()) {
       return methodBody.apply(this, arguments)
     }
   }
@@ -151,16 +151,12 @@ We write:
 ```javascript
 mustBeLoggedIn =
   provided(
-    function() {
-      return typeof currentUser !== "undefined" && currentUser !== null ? currentUser.isValid() : void 0;
-    }
+    function() { return currentUser.isValid(); }
   );
 
 triggersMenuRedraw = 
   after(
-    function() {
-      return this.trigger('menu:redraww');
-    }
+    function() { return this.trigger('menu:redraww'); }
   );
 ```
 
