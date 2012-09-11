@@ -1,3 +1,5 @@
+# The four basic combinators
+
 this.before =
   (decoration) ->
     (base) ->
@@ -30,6 +32,10 @@ this.provided =
         if condition.apply(this, arguments)
           base.apply(this, arguments)
 
+# Extras
+
+# If the method thows an error, retry it again a certain number of times.
+# e.g. `retry(3) -> # doSomething as many as four times`
 this.retry =
   (times) ->
     (base) ->
@@ -40,3 +46,21 @@ this.retry =
             return base.apply(this, arguments)
           catch error
             throw error unless (times -= 1) >= 0
+
+# throw an error before the method is executed if the precondition function fails, with an
+# optional message, e.g. `precondition 'account must be valid', -> @account.isValid()` or
+# `precondition -> @account.isValid()`
+this.precondition =
+  ->
+    [throwable, condition] = arguments
+    (condition = throwable) and (throwable = 'Failed precondition') unless condition
+    this.before -> throw throwable unless condition.apply(this, arguments)
+
+# throw an error after the method is executed if the postcondition function fails, with an
+# optional message, e.g. `postcondition 'account must be valid', -> @account.isValid()` or
+# `postcondition -> @account.isValid()`
+this.postcondition =
+  ->
+    [throwable, condition] = arguments
+    (condition = throwable) and (throwable = 'Failed postcondition') unless condition
+    this.after -> throw throwable unless condition.apply(this, arguments)

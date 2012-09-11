@@ -1,6 +1,5 @@
 C = require('../lib/method-combinators')
 
-
 describe "Method Combinators", ->
 
   describe "before", ->
@@ -134,38 +133,6 @@ describe "Method Combinators", ->
 
   describe "provided", ->
 
-    it 'should set this appropriately', ->
-
-      decorator = C.provided ->
-        @foo = 'decorated'
-      class ProvidedClazz
-        getFoo: -> @foo
-        setFoo: (@foo) ->
-        test:
-          decorator \
-          ->
-
-      eg = new ProvidedClazz()
-      eg.setFoo('eg')
-      eg.test()
-
-      expect(eg.getFoo()).toBe('decorated')
-
-    it 'should act before', ->
-
-      decorator = C.provided ->
-        @foo = 'decorated'
-      class ProvidedClazz
-        getFoo: -> @foo
-        setFoo:
-          decorator \
-          (@foo) ->
-
-      eg = new ProvidedClazz()
-      eg.setFoo('eg')
-
-      expect(eg.getFoo()).toBe('eg')
-
     it 'should guard', ->
 
       decorator = C.provided (what) ->
@@ -183,7 +150,7 @@ describe "Method Combinators", ->
 
       expect(eg.getFoo()).toBe('foo')
 
-  describe "try", ->
+  describe "retry", ->
 
     describe 'times < 0', ->
 
@@ -279,3 +246,50 @@ describe "Method Combinators", ->
         eg = new TryClazz(6)
 
         expect(eg.foo()).toBe 'succeed'
+
+  describe 'precondition', ->
+
+    it 'should throw error', ->
+
+      mustBeSane = C.precondition 'must be sane', -> @sane
+
+      class TestClazz
+        constructor: (@sane) ->
+        setSanity:
+          mustBeSane \
+          (@sane) ->
+
+      insane = new TestClazz(false)
+      expect(-> insane.setSanity(true)).toThrow 'must be sane'
+      expect(-> insane.setSanity(false)).toThrow 'must be sane'
+
+    it 'should throw error', ->
+
+      mustBeSane = C.precondition 'must be sane', -> @sane
+
+      class TestClazz
+        constructor: (@sane) ->
+        setSanity:
+          mustBeSane \
+          (@sane) ->
+
+      sane = new TestClazz(true)
+      expect(-> sane.setSanity(true)).not.toThrow 'must be sane'
+      expect(-> sane.setSanity(false)).not.toThrow 'must be sane'
+
+    it 'should work without a message', ->
+
+      mustBeSane = C.precondition -> @sane
+
+      class TestClazz
+        constructor: (@sane) ->
+        setSanity:
+          mustBeSane \
+          (@sane) ->
+
+      insane = new TestClazz(false)
+      expect(-> insane.setSanity(true)).toThrow 'Failed precondition'
+      expect(-> insane.setSanity(false)).toThrow 'Failed precondition'
+      sane = new TestClazz(true)
+      expect(-> sane.setSanity(true)).not.toThrow 'Failed precondition'
+      expect(-> sane.setSanity(false)).not.toThrow 'Failed precondition'

@@ -9,7 +9,6 @@ This library gives you some handy function combinators you can use to make [Meth
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript "Method Decorators in CoffeeScript"
 
 ```coffeescript
-
 this.before =
   (decoration) ->
     (base) ->
@@ -41,18 +40,6 @@ this.provided =
       ->
         if condition.apply(this, arguments)
           base.apply(this, arguments)
-
-this.retry =
-  (times) ->
-    (base) ->
-      ->
-        return unless times >= 0
-        loop
-          try
-            return base.apply(this, arguments)
-          catch error
-            throw error unless (times -= 1) >= 0
-
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.
@@ -110,7 +97,6 @@ Method combinators are convenient function combinators for making method decorat
 2. You want to do something *after* the method's base logic is executed.
 3. You want to wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
-5. You want to *retry* something a certain number of times if it fails, before giving up.
 
 Method *combinators* make these common kinds of method decorators extremely easy to write. Instead of:
 
@@ -176,15 +162,15 @@ Can I install it with npm?
 
 Yes: `npm install method-combinators`
 
-How to get started
+Anything you left out?
 ---
 
-Eat a hearty breakfast. Breakfast is the most important meal of the day!
+Yes, there are some extra combinators that are useful for things like error handling and design-by-contract. Read the source for yourself.
 
 Et cetera
 ---
 
-Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic]. The `retry` combinator was inspired by Michael Fairley's Ruby [method_decorators](https://github.com/michaelfairley/method_decorators).
+Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic]. The `retry` and condition combinators were inspired by Michael Fairley's Ruby [method_decorators](https://github.com/michaelfairley/method_decorators).
 
 [raganwald]: http://braythwayt.com
 [lic]: https://github.com/raganwald/method-combinators/blob/master/license.md

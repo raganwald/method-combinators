@@ -57,26 +57,6 @@ This library gives you some handy function combinators you can use to make [Meth
       };
     };
   };
-
-  this.retry = function(times) {
-    return function(base) {
-      return function() {
-        if (!(times >= 0)) {
-          return;
-        }
-        while (true) {
-          try {
-            return base.apply(this, arguments);
-          } catch (error) {
-            if (!times) {
-              throw error;
-            }
-            times -= 1;
-          }
-        }
-      };
-    };
-  };
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.
@@ -143,7 +123,6 @@ Method combinators are convenient function combinators for making method decorat
 2. You want to do something *after* the method's base logic is executed.
 3. You want to wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
-5. You want to *retry* something a certain number of times if it fails, before giving up.
 
 Method *combinators* make these common kinds of method decorators extremely easy to write. Instead of:
 
@@ -229,7 +208,7 @@ Eat a hearty breakfast. Breakfast is the most important meal of the day! [:-)](h
 Et cetera
 ---
 
-Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic]. The `retry` combinator was inspired by Michael Fairley's Ruby [method_decorators](https://github.com/michaelfairley/method_decorators).
+Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic]. The `retry` and condition combinators were inspired by Michael Fairley's Ruby [method_decorators](https://github.com/michaelfairley/method_decorators).
 
 [raganwald]: http://braythwayt.com
 [lic]: https://github.com/raganwald/method-combinators/blob/master/license.md
