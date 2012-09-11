@@ -1,5 +1,3 @@
-
-
 this.before =
   (decoration) ->
     (base) ->
