@@ -229,7 +229,7 @@ Eat a hearty breakfast. Breakfast is the most important meal of the day! [:-)](h
 Et cetera
 ---
 
-Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic].
+Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It is available under the terms of the [MIT License][lic]. The `retry` combinator was inspired by Michael Fairley's Ruby [method_decorators](https://github.com/michaelfairley/method_decorators).
 
 [raganwald]: http://braythwayt.com
-[lic]: https://github.com/raganwald/YouAreDaChef/blob/master/license.md
+[lic]: https://github.com/raganwald/method-combinators/blob/master/license.md
