@@ -42,6 +42,17 @@ this.provided =
         if condition.apply(this, arguments)
           base.apply(this, arguments)
 
+this.retry =
+  (times) ->
+    (base) ->
+      ->
+        return unless times >= 0
+        loop
+          try
+            return base.apply(this, arguments)
+          catch error
+            throw error unless (times -= 1) >= 0
+
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.
@@ -99,8 +110,9 @@ Method combinators are convenient function combinators for making method decorat
 2. You want to do something *after* the method's base logic is executed.
 3. You want to do wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
+5. You want to *retry* something a certain number of times if it fails before giving up.
 
-Method *combinators* make these four kinds of method decorators extremely easy to write. Instead of:
+Method *combinators* make these common kinds of method decorators extremely easy to write. Instead of:
 
 ```coffeescript
 mustBeLoggedIn = (methodBody) ->

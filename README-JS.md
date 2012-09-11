@@ -58,7 +58,25 @@ This library gives you some handy function combinators you can use to make [Meth
     };
   };
 
-
+  this.retry = function(times) {
+    return function(base) {
+      return function() {
+        if (!(times >= 0)) {
+          return;
+        }
+        while (true) {
+          try {
+            return base.apply(this, arguments);
+          } catch (error) {
+            if (!times) {
+              throw error;
+            }
+            times -= 1;
+          }
+        }
+      };
+    };
+  };
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.
@@ -125,8 +143,9 @@ Method combinators are convenient function combinators for making method decorat
 2. You want to do something *after* the method's base logic is executed.
 3. You want to do wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
+5. You want to *retry* something a certain number of times if it fails before giving up.
 
-Method *combinators* make these four kinds of method decorators extremely easy to write. Instead of:
+Method *combinators* make these common kinds of method decorators extremely easy to write. Instead of:
 
 ```javascript
 mustBeLoggedIn = function (methodBody) {

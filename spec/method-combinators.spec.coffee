@@ -40,7 +40,7 @@ describe "Method Combinators", ->
     it 'should not guard', ->
 
       decorator = C.before -> false
-        
+
       class BeforeClazz
         getFoo: -> @foo
         setFoo:
@@ -107,7 +107,7 @@ describe "Method Combinators", ->
         callback()
         'decorated'
       class BeforeClazz
-        getFoo: 
+        getFoo:
           decorator \
           -> @foo
         setFoo: (@foo) ->
@@ -122,7 +122,7 @@ describe "Method Combinators", ->
       decorator = C.around (callback)->
         callback('decorated')
       class BeforeClazz
-        getFoo: 
+        getFoo:
           decorator \
           -> @foo
         setFoo: (@foo) ->
@@ -138,14 +138,14 @@ describe "Method Combinators", ->
 
       decorator = C.provided ->
         @foo = 'decorated'
-      class BeforeClazz
+      class ProvidedClazz
         getFoo: -> @foo
         setFoo: (@foo) ->
         test:
           decorator \
           ->
 
-      eg = new BeforeClazz()
+      eg = new ProvidedClazz()
       eg.setFoo('eg')
       eg.test()
 
@@ -155,13 +155,13 @@ describe "Method Combinators", ->
 
       decorator = C.provided ->
         @foo = 'decorated'
-      class BeforeClazz
+      class ProvidedClazz
         getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
 
-      eg = new BeforeClazz()
+      eg = new ProvidedClazz()
       eg.setFoo('eg')
 
       expect(eg.getFoo()).toBe('eg')
@@ -170,15 +170,113 @@ describe "Method Combinators", ->
 
       decorator = C.provided (what) ->
         what is 'foo'
-        
-      class BeforeClazz
+
+      class ProvidedClazz
         getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
 
-      eg = new BeforeClazz()
+      eg = new ProvidedClazz()
       eg.setFoo('foo')
       eg.setFoo('eg')
 
       expect(eg.getFoo()).toBe('foo')
+
+  describe "try", ->
+
+    describe 'times < 0', ->
+
+      it 'should return nothing', ->
+
+        class TryClazz
+          foo:
+            C.retry(-42) \
+            -> 'foo'
+
+        eg = new TryClazz()
+
+        expect(eg.foo()).toBe(undefined)
+
+    describe 'times == 0', ->
+
+      it 'should return if there is no error', ->
+
+        class TryClazz
+          foo:
+            C.retry(0) \
+            -> 'foo'
+
+        eg = new TryClazz()
+
+        expect(eg.foo()).toBe('foo')
+
+      it 'should return if there is no error', ->
+
+        class TryClazz
+          foo:
+            C.retry(0) \
+            ->
+              throw 'bogwash'
+
+        eg = new TryClazz()
+
+        expect(-> eg.foo()).toThrow 'bogwash'
+
+    describe 'times > 0', ->
+
+      it 'should return if there is no error', ->
+
+        class TryClazz
+          foo:
+            C.retry(6) \
+            -> 'foo'
+
+        eg = new TryClazz()
+
+        expect(eg.foo()).toBe('foo')
+
+      it 'should return if there is no error', ->
+
+        class TryClazz
+          foo:
+            C.retry(6) \
+            ->
+              throw 'bogwash'
+
+        eg = new TryClazz()
+
+        expect(-> eg.foo()).toThrow 'bogwash'
+
+      it 'should throw an error if we don\'t have enough retries', ->
+
+        class TryClazz
+          constructor: (@times_to_fail) ->
+          foo:
+            C.retry(6) \
+            ->
+              if (@times_to_fail -= 1) >= 0
+                throw 'fail'
+              else
+                'succeed'
+
+        eg = new TryClazz(7) # first try plus six retries and still fails
+
+        expect(-> eg.foo()).toThrow 'fail'
+
+      it 'should return if we have enough retries', ->
+
+        class TryClazz
+          constructor: (@times_to_fail) ->
+          foo:
+            C.retry(6) \
+            ->
+              if (@times_to_fail -= 1) >= 0
+                throw 'fail'
+              else
+                'succeed'
+
+        eg = new TryClazz(6)
+
+        expect(eg.foo()).toBe 'succeed'
+

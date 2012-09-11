@@ -29,3 +29,14 @@ this.provided =
       ->
         if condition.apply(this, arguments)
           base.apply(this, arguments)
+
+this.retry =
+  (times) ->
+    (base) ->
+      ->
+        return unless times >= 0
+        loop
+          try
+            return base.apply(this, arguments)
+          catch error
+            throw error unless (times -= 1) >= 0
