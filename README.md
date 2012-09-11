@@ -108,9 +108,9 @@ Method combinators are convenient function combinators for making method decorat
 
 1. You want to do something *before* the method's base logic is executed.
 2. You want to do something *after* the method's base logic is executed.
-3. You want to do wrap some logic *around* the method's base logic.
+3. You want to wrap some logic *around* the method's base logic.
 4. You only want to execute the method's base logic *provided* some condition is truthy.
-5. You want to *retry* something a certain number of times if it fails before giving up.
+5. You want to *retry* something a certain number of times if it fails, before giving up.
 
 Method *combinators* make these common kinds of method decorators extremely easy to write. Instead of:
 
@@ -179,7 +179,7 @@ Yes: `npm install method-combinators`
 How to get started
 ---
 
-Eat a hearty breakfast. Breakfast is the most important meal of the day! [:-)](https://github.com/facebook/javelin/)
+Eat a hearty breakfast. Breakfast is the most important meal of the day!
 
 Et cetera
 ---

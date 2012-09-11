@@ -279,4 +279,3 @@ describe "Method Combinators", ->
         eg = new TryClazz(6)
 
         expect(eg.foo()).toBe 'succeed'
-
