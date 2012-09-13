@@ -8,8 +8,7 @@ This library gives you some handy function combinators you can use to make [Meth
 
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript "Method Decorators in CoffeeScript"
 
-```coffeescript
-
+```javascript
   var __slice = [].slice;
 
   this.before = function(decoration) {
@@ -25,8 +24,7 @@ This library gives you some handy function combinators you can use to make [Meth
     return function(base) {
       return function() {
         var __value__;
-        __value__ = base.apply(this, arguments);
-        decoration.apply(this, arguments);
+        decoration.call(this, __value__ = base.apply(this, arguments));
         return __value__;
       };
     };
