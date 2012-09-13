@@ -11,8 +11,7 @@ this.after =
   (decoration) ->
     (base) ->
       ->
-        __value__ = base.apply(this, arguments)
-        decoration.apply(this, arguments)
+        decoration.call(this, __value__ = base.apply(this, arguments))
         __value__
 
 this.around =

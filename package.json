@@ -2,7 +2,7 @@
   "author": "Reg Braithwaite <raganwald@gmail.com> (http://braythwayt.com)",
   "name": "method-combinators",
   "description": "Coffeescript/Javascript method combinators",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "https://github.com/raganwald/method-combinators",
   "repository": {
     "type": "git",

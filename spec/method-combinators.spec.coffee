@@ -9,7 +9,6 @@ describe "Method Combinators", ->
       decorator = C.before ->
         @foo = 'decorated'
       class BeforeClazz
-        getFoo: -> @foo
         setFoo: (@foo) ->
         test:
           decorator \
@@ -19,14 +18,13 @@ describe "Method Combinators", ->
       eg.setFoo('eg')
       eg.test()
 
-      expect(eg.getFoo()).toBe('decorated')
+      expect(eg.foo).toBe('decorated')
 
     it 'should act before', ->
 
       decorator = C.before ->
         @foo = 'decorated'
       class BeforeClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -34,14 +32,13 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
 
     it 'should not guard', ->
 
       decorator = C.before -> false
 
       class BeforeClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -49,7 +46,19 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
+
+    it 'should be paramaterized by the arguments', ->
+
+      decorator = C.before (foo, bar) ->
+        expect(foo).toBe 'foo'
+        expect(bar).toBe 'bar'
+
+      class BeforeClazz
+        noop: decorator -> 'blitz'
+
+      eg = new BeforeClazz()
+      eg.noop 'foo', 'bar'
 
   describe "after", ->
 
@@ -58,7 +67,6 @@ describe "Method Combinators", ->
       decorator = C.after ->
         @foo = 'decorated'
       class BeforeClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -66,14 +74,13 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('decorated')
+      expect(eg.foo).toBe('decorated')
 
     it 'should not filter', ->
 
       decorator = C.after ->
         'decorated'
       class BeforeClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -81,7 +88,20 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
+
+    it 'should be paramaterized by the return value', ->
+
+      decorator = C.after (foo, bar) ->
+        expect(foo).not.toBe 'foo'
+        expect(bar).not.toBe 'bar'
+        expect(foo).toBe 'blitz'
+
+      class BeforeClazz
+        noop: decorator -> 'blitz'
+
+      eg = new BeforeClazz()
+      eg.noop 'foo', 'bar'
 
   describe "around", ->
 
@@ -90,7 +110,6 @@ describe "Method Combinators", ->
       decorator = C.around (callback)->
         callback('decorated')
       class BeforeClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -98,7 +117,7 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
 
     it 'should return what the callback returns', ->
 
@@ -114,7 +133,7 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
 
     it 'should not change the arguments', ->
 
@@ -129,7 +148,7 @@ describe "Method Combinators", ->
       eg = new BeforeClazz()
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('eg')
+      expect(eg.foo).toBe('eg')
 
   describe "provided", ->
 
@@ -139,7 +158,6 @@ describe "Method Combinators", ->
         what is 'foo'
 
       class ProvidedClazz
-        getFoo: -> @foo
         setFoo:
           decorator \
           (@foo) ->
@@ -148,7 +166,7 @@ describe "Method Combinators", ->
       eg.setFoo('foo')
       eg.setFoo('eg')
 
-      expect(eg.getFoo()).toBe('foo')
+      expect(eg.foo).toBe('foo')
 
   describe "retry", ->
 
