@@ -51,8 +51,7 @@ this.retry =
 # optional message, e.g. `precondition 'account must be valid', -> @account.isValid()` or
 # `precondition -> @account.isValid()`
 this.precondition =
-  ->
-    [throwable, condition] = arguments
+  (throwable, condition) ->
     (condition = throwable) and (throwable = 'Failed precondition') unless condition
     this.before -> throw throwable unless condition.apply(this, arguments)
 
@@ -60,7 +59,6 @@ this.precondition =
 # optional message, e.g. `postcondition 'account must be valid', -> @account.isValid()` or
 # `postcondition -> @account.isValid()`
 this.postcondition =
-  ->
-    [throwable, condition] = arguments
+  (throwable, condition) ->
     (condition = throwable) and (throwable = 'Failed postcondition') unless condition
     this.after -> throw throwable unless condition.apply(this, arguments)
