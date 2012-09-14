@@ -190,18 +190,20 @@ Is it any good?
 [Yes][y].
 
 [y]: http://news.ycombinator.com/item?id=3067434
-
-[js]: https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js
-
 Can I install it with npm?
 ---
 
 Yes: `npm install method-combinators`
 
-How to get started
+Anything you left out?
 ---
 
-Eat a hearty breakfast. Breakfast is the most important meal of the day! [:-)](https://github.com/facebook/javelin/)
+Yes, there are some extra combinators that are useful for things like error handling and design-by-contract. Read [the source][js] for yourself. Or have a gander at these blog posts:
+
+* [Method Combinators in CoffeeScript ](https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript)
+* [Using Method Decorators to Decouple Code](https://github.com/raganwald/homoiconic/blob/master/2012/08/decoupling_with_method_decorators.md#using-method-decorators-to-decouple-code)
+* [Memoized, the *practical* method decorator](https://github.com/raganwald/homoiconic/blob/master/2012/09/memoize-the-practical-method-decorator.md#memoized-the-practical-method-decorator)
+* [More Practical Method Combinators: Pre- and Post-conditions](https://github.com/raganwald/homoiconic/blob/master/2012/09/precondition-and-postcondition.md#more-practical-method-combinators-pre--and-post-conditions)
 
 Et cetera
 ---
@@ -210,3 +212,6 @@ Method Combinators was created by [Reg "raganwald" Braithwaite][raganwald]. It i
 
 [raganwald]: http://braythwayt.com
 [lic]: https://github.com/raganwald/method-combinators/blob/master/license.md
+
+[js]: https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.js
+[c]: https://github.com/raganwald/method-combinators/blob/master/lib/method-combinators.coffee
