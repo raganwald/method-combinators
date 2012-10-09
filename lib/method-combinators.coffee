@@ -87,7 +87,7 @@ this.async = do (async = undefined) ->
     (async_base) ->
       (argv..., callback) ->
         decorated_callback = (callback_argv...) =>
-          async_decoration.apply(this, argv.concat(-> callback.apply(this, callback_argv)))
+          async_decoration.apply(this, callback_argv.concat(-> callback.apply(this, callback_argv)))
         async_base.apply(this, argv.concat(decorated_callback))
 
   async.provided = (async_predicate) ->

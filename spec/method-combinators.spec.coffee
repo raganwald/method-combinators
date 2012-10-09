@@ -393,7 +393,7 @@ describe "Asynchronous Method Combinators", ->
       decorate(base) 'parameter', (p) ->
         a.push('callback/' + p)
 
-      expect(a).toEqual(['base/parameter', 'after/parameter', 'callback/result'])
+      expect(a).toEqual(['base/parameter', 'after/result', 'callback/result'])
 
   describe "async.provided", ->
 
