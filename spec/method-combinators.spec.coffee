@@ -311,3 +311,108 @@ describe "Method Combinators", ->
       sane = new TestClazz(true)
       expect(-> sane.setSanity(true)).not.toThrow 'Failed precondition'
       expect(-> sane.setSanity(false)).not.toThrow 'Failed precondition'
+
+describe "Asynchronous Method Combinators", ->
+
+  a = undefined
+
+  beforeEach ->
+    a = []
+
+  addn = (n) ->
+    a.push(n)
+
+  add2 = ->
+    a.push(2)
+
+  describe "async(...)", ->
+
+    it "should convert a fn to an async_fn", ->
+
+      C.async(addn)(1, add2)
+
+      expect(a).toEqual([1,2])
+
+  describe "async.before", ->
+
+    it "should handle the most base case", ->
+
+      decoration = C.async ->
+        a.push('before')
+      base = C.async ->
+        a.push('base')
+
+      decorate = C.async.before(decoration)
+
+      decorate(base) ->
+
+      expect(a).toEqual(['before', 'base'])
+
+    it "should pass the result as a parameter", ->
+
+      decoration = C.async (p) ->
+        a.push('before/' + p)
+        'throw me away'
+      base = C.async (p) ->
+        a.push('base/' + p)
+        'result'
+
+      decorate = C.async.before(decoration)
+
+      decorate(base) 'parameter', (p) ->
+        a.push('callback/' + p)
+
+      expect(a).toEqual(['before/parameter', 'base/parameter', 'callback/result'])
+
+  describe "async.after", ->
+
+    it "should handle the most base case", ->
+
+      decoration = C.async ->
+        a.push('after')
+      base = C.async ->
+        a.push('base')
+
+      decorate = C.async.after(decoration)
+
+      decorate(base) ->
+
+      expect(a).toEqual(['base', 'after'])
+
+    it "should pass the result as a parameter", ->
+
+      decoration = C.async (p) ->
+        a.push('after/' + p)
+        'throw me away'
+      base = C.async (p) ->
+        a.push('base/' + p)
+        'result'
+
+      decorate = C.async.after(decoration)
+
+      decorate(base) 'parameter', (p) ->
+        a.push('callback/' + p)
+
+      expect(a).toEqual(['base/parameter', 'after/parameter', 'callback/result'])
+
+  describe "async.provided", ->
+
+    predicate = C.async (p) -> p is 'yes'
+    decorate = C.async.provided(predicate)
+
+    describe "for the base case", ->
+
+      base = C.async ->
+        a.push('base')
+
+      it "should handle the true case", ->
+
+        decorate(base) 'yes', ->
+
+        expect(a).toEqual(['base'])
+
+      it "should handle the false case", ->
+
+        decorate(base) 'no', ->
+
+        expect(a).toEqual([])

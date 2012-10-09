@@ -53,22 +53,22 @@ this.retry =
 # Throw an error before the method is executed if the prepredicate function fails, with an
 # optional message, e.g. `prepredicate 'account must be valid', -> @account.isValid()` or
 # `prepredicate -> @account.isValid()`
-this.prepredicate =
+this.precondition =
   (throwable, predicate) ->
-    (predicate = throwable) and (throwable = 'Failed prepredicate') unless predicate
+    (predicate = throwable) and (throwable = 'Failed precondition') unless predicate
     this.before -> throw throwable unless predicate.apply(this, arguments)
 
 # Throw an error after the method is executed if the postpredicate function fails, with an
 # optional message, e.g. `postpredicate 'account must be valid', -> @account.isValid()` or
 # `postpredicate -> @account.isValid()`
-this.postpredicate =
+this.postcondition =
   (throwable, predicate) ->
-    (predicate = throwable) and (throwable = 'Failed postpredicate') unless predicate
+    (predicate = throwable) and (throwable = 'Failed postcondition') unless predicate
     this.after -> throw throwable unless predicate.apply(this, arguments)
 
 # ## Asynchronous Method Combinators
 
-this.async = do (async) ->
+this.async = do (async = undefined) ->
 
   async = (fn) ->
     (argv..., callback) ->
@@ -86,15 +86,15 @@ this.async = do (async) ->
   async.after = (async_decoration) ->
     (async_base) ->
       (argv..., callback) ->
-        decorated_callback = =>
-          async_decoration.apply(this, argv.concat(-> callback.apply(this, arguments)))
+        decorated_callback = (callback_argv...) =>
+          async_decoration.apply(this, argv.concat(-> callback.apply(this, callback_argv)))
         async_base.apply(this, argv.concat(decorated_callback))
 
   async.provided = (async_predicate) ->
     (async_base) ->
       (argv..., callback) ->
         decorated_base = (predicate_value) ->
-          if predicate_value?
+          if predicate_value
             async_base.apply(this, argv.concat(callback))
           else
             callback()
