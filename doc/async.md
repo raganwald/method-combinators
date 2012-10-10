@@ -5,7 +5,7 @@ The standard [method combinators] make a fairly obvious assumption: That the met
 
 [method combinators]: https://github.com/raganwald/method-combinators
 
-One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js].[[1](#notes)] 
+One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js][node][[1](#notes)] (click [here](http:async-js.md) for examples in JavaScript):
 
 [node.js]: http://nodejs.org/
 
@@ -14,7 +14,7 @@ myExampleObject =
   name: 'Jerry Seinfeld'
   occupation: 'Comedian'
   update: (callback = ->) ->
-    jQuery.get('http://example.com/comedians/jseinfeld.json'), {}, (data) ->
+    jQuery.get 'http://example.com/comedians/jseinfeld.json', {}, (data) ->
       @name = data.name
       @occupation = data.occupation
       callback()
@@ -36,7 +36,7 @@ myExampleObject =
   name: 'Jerry Seinfeld'
   occupation: 'Actor'
   update: showsWait hidesWait ->
-    jQuery.get('http://example.com/comedians/jseinfeld.json'), {}, (data) ->
+    jQuery.get 'http://example.com/comedians/jseinfeld.json', {}, (data) ->
       @name = data.name
       @occupation = data.occupation
       
@@ -103,9 +103,8 @@ showsWait = async.before (callback) ->
 You can—if you prefer—write:
 
 ```coffeescript
-showsWait = async.before
-  async -> 
-    jQuery('img#wait').show()
+showsWait = async.before async -> 
+  jQuery('img#wait').show()
 ```
 
 Notes
