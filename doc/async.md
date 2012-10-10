@@ -1,7 +1,7 @@
 Method Combinators in an Asynchronous World
 ===========================================
 
-(These examples are in CoffeeScript. Click [here](http:./async-js.md) for examples in JavaScript.)
+(These examples are in CoffeeScript. Click [here](https://github.com/raganwald/method-combinators/blob/master/doc/async-js.md#method-combinators-in-an-asynchronous-world) for examples in JavaScript.)
 
 The standard [method combinators] make a fairly obvious assumption: That the methods being "decorated" are synchronous, meaning, they execute and return when they are done. Methods that perform an asynchronous action such as performing an XMLHttpRequest may return immediately without waiting for the request to complete.
 

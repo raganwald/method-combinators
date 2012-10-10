@@ -1,11 +1,13 @@
 Method Combinators in an Asynchronous World
 ===========================================
 
+(These examples are in JavaScript. Click [here](https://github.com/raganwald/method-combinators/blob/master/doc/async.md#method-combinators-in-an-asynchronous-world) for examples in CoffeeScript.)
+
 The standard [method combinators] make a fairly obvious assumption: That the methods being "decorated" are synchronous, meaning, they execute and return when they are done. Methods that perform an asynchronous action such as performing an XMLHttpRequest may return immediately without waiting for the request to complete.
 
 [method combinators]: https://github.com/raganwald/method-combinators
 
-One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js][node][[1](#notes)] (click [here](http:async.md) for examples in CoffeeScript):
+One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js][node]([1](#notes)). This is clearly not a practical code snippet, it's intended to be just sane enough to use as an example:
 
 [node]: http://nodejs.org/
 
@@ -27,8 +29,6 @@ myExampleObject = {
   }
 };
 ```
-
-(This is clearly not a practical code snippet, it's intended to be just sane enough to use as an example.)
 
 The **async** combinators help you make method decorators for methods that use callback-oriented programming. You can use this callback parameter as you would when doing any other Node-like programming. In addition, you can now decorate the method using async combinators:
 
