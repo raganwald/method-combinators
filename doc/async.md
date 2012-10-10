@@ -111,5 +111,6 @@ Notes
 -----
 
 1. Another, more sophisticated approach uses Promises or [Deferred Objects]. Future method combinators may interoperate with deferred objects.
+2. The async combinators are based largely on work by [Nate Murray](https://github.com/jashmenn).
 
 [Deferred Objects]:http://api.jquery.com/category/deferred-object/
