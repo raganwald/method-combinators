@@ -5,7 +5,7 @@ The standard [method combinators] make a fairly obvious assumption: That the met
 
 [method combinators]: https://github.com/raganwald/method-combinators
 
-One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js].[[1][#notes]] 
+One pattern for dealing with this is "callback-oriented programming," as popularized by [node.js].[[1](#notes)] 
 
 [node.js]: http://nodejs.org/
 
@@ -111,6 +111,6 @@ showsWait = async.before
 Notes
 -----
 
-1. Another, more sophisticated approach uses Promises or [Deferred Objects].
+1. Another, more sophisticated approach uses Promises or [Deferred Objects]. Future method combinators may interoperate with deferred objects.
 
 [Deferred Objects]:http://api.jquery.com/category/deferred-object/
