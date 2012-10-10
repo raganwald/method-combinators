@@ -173,6 +173,11 @@ AnotherControllerLikeThing.prototype.updateUserPreferences =
 
 The combinators do the rest!
 
+How can I use method combinators with Node's callback-oriented programming?
+---
+
+This library also provides [method combinators that work in an asynchronous world](https://github.com/raganwald/method-combinators/blob/master/doc/async.md#method-combinators-in-an-asynchronous-world).
+
 So these are like RubyOnRails controller filters?
 ---
 
