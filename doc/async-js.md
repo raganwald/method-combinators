@@ -18,13 +18,12 @@ myExampleObject = {
   name: 'Jerry Seinfeld',
   occupation: 'Comedian',
   update: function(callback) {
-    if (callback == null) {
-      callback = function() {};
-    }
     return jQuery.get('http://example.com/comedians/jseinfeld.json', {}, function(data) {
       this.name = data.name;
       this.occupation = data.occupation;
-      return callback();
+      if (callback != null) {
+        callback();
+      }
     });
   }
 };
@@ -51,7 +50,7 @@ myExampleObject = {
   update: showsWait(hidesWait(function() {
     return jQuery.get('http://example.com/comedians/jseinfeld.json', {}, function(data) {
       this.name = data.name;
-      return this.occupation = data.occupation;
+      this.occupation = data.occupation;
     });
   }))
 };
