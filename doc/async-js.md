@@ -30,7 +30,7 @@ myExampleObject = {
 };
 ```
 
-The **async** combinators help you make method decorators for methods that use callback-oriented programming. You can use this callback parameter as you would when doing any other Node-like programming. In addition, you can now decorate the method using async combinators:
+The **async** combinators help you make method decorators for methods that use callback-oriented programming.([2](#notes)) You can use this callback parameter as you would when doing any other Node-like programming. In addition, you can now decorate the method using async combinators:
 
 ```javascript
 var hidesWait, myExampleObject, showsWait;
@@ -161,5 +161,6 @@ Notes
 -----
 
 1. Another, more sophisticated approach uses Promises or [Deferred Objects]. Future method combinators may interoperate with deferred objects.
+2. The async combinators are based largely on work by [Nate Murray](https://github.com/jashmenn).
 
 [Deferred Objects]:http://api.jquery.com/category/deferred-object/
