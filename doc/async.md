@@ -107,6 +107,8 @@ showsWait = async.before async ->
   jQuery('img#wait').show()
 ```
 
+On a very small example like this, the difference is one of taste. On larger, more complex functions with multiple paths of termination, the `async` helper is very useful.
+
 Notes
 -----
 
