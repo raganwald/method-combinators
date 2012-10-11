@@ -12,7 +12,7 @@ One pattern for dealing with this is "callback-oriented programming," as popular
 [node]: http://nodejs.org/
 
 ```coffeescript
-myExampleObject =
+myFunnyObject =
   name: 'Jerry Seinfeld'
   occupation: 'Comedian'
   update: (callback = ->) ->
@@ -32,7 +32,7 @@ hidesWait = async.after (callback) ->
   jQuery('img#wait').show()
   callback()
   
-myExampleObject =
+myFunnyObject =
   name: 'Jerry Seinfeld'
   occupation: 'Actor'
   update: showsWait hidesWait ->
@@ -40,8 +40,8 @@ myExampleObject =
       @name = data.name
       @occupation = data.occupation
       
-myExampleObject.update ->
-  alert "Jerry's new occupation is #{myExampleObject.occupation}"
+myFunnyObject.update ->
+  alert "Jerry's new occupation is #{myFunnyObject.occupation}"
 ```
 
 In this case, we're showing some kind of "wait" image (perhaps a spinning gif) when we call the method, and hiding it after we receive the update. The async combinators are "callback-aware," so the gif will be hidden just before the alert is displayed.
