@@ -174,6 +174,11 @@ showsWait = async.before(
 
 On a very small example like this, the difference is one of taste. On larger, more complex functions with multiple paths of termination, the `async` helper is very useful.
 
+post scriptum
+-------------
+
+I'm writing a book called [CoffeeScript Ristretto](http://leanpub.com/coffeescript-ristretto). Check it out!
+
 Notes
 -----
 
