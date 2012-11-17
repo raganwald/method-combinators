@@ -175,12 +175,12 @@ describe "Method Combinators", ->
       decorator = C.excepting (what) ->
         what is 'foo'
 
-      class ProvidedClazz
+      class ExceptingClazz
         setFoo:
           decorator \
           (@foo) ->
 
-      eg = new ProvidedClazz()
+      eg = new ExceptingClazz()
       eg.setFoo('eg')
       eg.setFoo('foo')
 
