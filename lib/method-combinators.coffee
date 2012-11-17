@@ -35,6 +35,13 @@ this.provided =
         if predicate.apply(this, arguments)
           base.apply(this, arguments)
 
+this.excepting =
+  (predicate) ->
+    (base) ->
+      ->
+        unless predicate.apply(this, arguments)
+          base.apply(this, arguments)
+
 # ## Extras
 
 # If the method thows an error, retry it again a certain number of times.
