@@ -55,6 +55,16 @@ This library gives you some handy function combinators you can use to make [Meth
       };
     };
   };
+
+  this.excepting = function(condition) {
+    return function(base) {
+      return function() {
+        if (!condition.apply(this, arguments)) {
+          return base.apply(this, arguments);
+        }
+      };
+    };
+  }
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.

@@ -168,6 +168,24 @@ describe "Method Combinators", ->
 
       expect(eg.foo).toBe('foo')
 
+  describe "excepting", ->
+
+    it 'should guard against success', ->
+
+      decorator = C.excepting (what) ->
+        what is 'foo'
+
+      class ExceptingClazz
+        setFoo:
+          decorator \
+          (@foo) ->
+
+      eg = new ExceptingClazz()
+      eg.setFoo('eg')
+      eg.setFoo('foo')
+
+      expect(eg.foo).toBe('eg')
+
   describe "retry", ->
 
     describe 'times < 0', ->

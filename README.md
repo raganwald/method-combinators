@@ -39,6 +39,13 @@ this.provided =
       ->
         if condition.apply(this, arguments)
           base.apply(this, arguments)
+
+this.excepting =
+  (condition) ->
+    (base) ->
+      ->
+        unless condition.apply(this, arguments)
+          base.apply(this, arguments)
 ```
 
 The library is called "Method Combinators" because these functions are isomorphic to the combinators from Combinatorial Logic.
