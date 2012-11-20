@@ -44,7 +44,7 @@ this.excepting =
 
 # ## Extras
 
-# If the method thows an error, retry it again a certain number of times.
+# If the method throws an error, retry it again a certain number of times.
 # e.g. `retry(3) -> # doSomething as many as four times`
 this.retry =
   (times) ->
@@ -72,6 +72,14 @@ this.postcondition =
   (throwable, predicate) ->
     (predicate = throwable) and (throwable = 'Failed postcondition') unless predicate
     this.after -> throw throwable unless predicate.apply(this, arguments)
+    
+# Apply the method to each member of an array
+this.splat = (base) ->
+  ->
+    for arg0 in arguments[0]
+      argv = [].slice.call(arguments, 0)
+      argv[0] = arg0
+      base.apply this, argv
 
 # Run function on each member of array, equivalent to map
 this.splatter =
