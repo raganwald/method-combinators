@@ -73,6 +73,16 @@ this.postcondition =
     (predicate = throwable) and (throwable = 'Failed postcondition') unless predicate
     this.after -> throw throwable unless predicate.apply(this, arguments)
 
+# Run function on each member of array, equivalent to map
+this.splatter =
+  (base)->
+    (args...)->
+      array = args[0]
+      for element in array
+        newArgs = args.slice(0)
+        newArgs[0] = element
+        base.apply this, newArgs
+
 # ## Asynchronous Method Combinators
 
 this.async = do (async = undefined) ->

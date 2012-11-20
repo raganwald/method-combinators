@@ -330,6 +330,40 @@ describe "Method Combinators", ->
       expect(-> sane.setSanity(true)).not.toThrow 'Failed precondition'
       expect(-> sane.setSanity(false)).not.toThrow 'Failed precondition'
 
+  describe "splatter", ->
+
+    it 'should run function of each item in array', ->
+
+      decorator = C.splatter
+
+      class SplatterClazz
+        incrementPrices:
+          decorator \
+          (item) ->
+            item.price += 10
+
+      eg = new SplatterClazz()
+      items = [{price: 5}]
+      eg.incrementPrices items
+
+      expect(items[0].price).toBe(15)
+
+    it 'should collect results into return value of array', ->
+
+      decorator = C.splatter
+
+      class SplatterClazz
+        mapToOnes:
+          decorator \
+          (item) ->
+            1
+
+      eg = new SplatterClazz()
+      items = [{},{}]
+      value = eg.mapToOnes items
+
+      expect(value[1]).toBe(1)        
+
 describe "Asynchronous Method Combinators", ->
 
   a = undefined
