@@ -220,7 +220,7 @@ Yes, there are some extra combinators that are useful for things like error hand
 * [Memoized, the *practical* method decorator](https://github.com/raganwald/homoiconic/blob/master/2012/09/memoize-the-practical-method-decorator.md#memoized-the-practical-method-decorator)
 * [More Practical Method Combinators: Pre- and Post-conditions](https://github.com/raganwald/homoiconic/blob/master/2012/09/precondition-and-postcondition.md#more-practical-method-combinators-pre--and-post-conditions)
 
-I'm writing a book called [CoffeeScript Ristretto](http://leanpub.com/coffeescript-ristretto). Check it out!
+I've written a book called [JavaScript Allongé](http://leanpub.com/javascript-allonge) that discusses combinators and decorators in depth. Check it out!
 
 Et cetera
 ---
