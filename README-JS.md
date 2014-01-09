@@ -4,7 +4,9 @@ method-combinators
 tl;dr
 ---
 
-This library gives you some handy function combinators you can use to make [Method Decorators] in JavaScript (click [here](/raganwald/method-combinators/blob/master/README.md) for examples in CoffeeScript):
+This library gives you some handy function combinators you can use to make [Method Decorators] in JavaScript (click [here] for examples in CoffeeScript):
+
+[here]: https://github.com/raganwald/method-combinators/blob/master/README.md
 
 [Method Decorators]: https://github.com/raganwald/homoiconic/blob/master/2012/08/method-decorators-and-combinators-in-coffeescript.md#method-combinators-in-coffeescript "Method Decorators in CoffeeScript"
 
@@ -160,7 +162,7 @@ mustBeLoggedIn =
     function() { return currentUser.isValid(); }
   );
 
-triggersMenuRedraw = 
+triggersMenuRedraw =
   after(
     function() { return this.trigger('menu:redraww'); }
   );
